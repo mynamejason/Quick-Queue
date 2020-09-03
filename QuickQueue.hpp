@@ -8,15 +8,23 @@ template<typename T>
 
 class QuickQueue{
 public:
+	QuickQueue();
+	~QuickQueue();
+
 	T& head();
 	T& tail();
 
 	void pop(); //remove first element
 	void add(const T& input);
+	void resize();
 
 	void info();
 
 	std::vector<T> myVector_;
+
+	typename std::vector<T>::iterator first;
+	typename std::vector<T>::iterator last;
+	int itemCount;
 
 private:
 
