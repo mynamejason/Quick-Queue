@@ -29,22 +29,22 @@ T& QuickQueue<T>::tail(){
 }
 
 template<typename T>
-void QuickQueue<T>::add(const T& input){
-	if(itemCount == 0){
+void QuickQueue<T>::add(const T& input) {
+	if(itemCount == 0) {
 		myVector_.resize(10);
 		first = myVector_.begin();
 		last = myVector_.begin();
 		*first = input;
 	}
-	else if(itemCount == myVector_.size()){
+	else if(itemCount == myVector_.size()) {
 		myVector_.resize(myVector_.size() * 2);
 		first = myVector_.begin();
 		last = first + itemCount;
 		*last = input;
 	} else{
 		*last = input;
-		
 	}
+
 	itemCount++;
 	last++;
 	//
@@ -52,9 +52,14 @@ void QuickQueue<T>::add(const T& input){
 }
 
 template<typename T>
-void QuickQueue<T>::pop(){
-	std::cout << "pop: " << head() << std::endl;
-	myVector_.erase(first + 0);
+void QuickQueue<T>::pop() {
+	if(itemCount == 0) {
+		std::cout << "No elements" << std::endl;
+	} else {
+		*first = 0;
+		first++;
+		itemCount--;
+	}
 	
 	info();
 }
