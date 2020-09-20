@@ -30,21 +30,29 @@ T& QuickQueue<T>::tail(){
 
 template<typename T>
 void QuickQueue<T>::add(const T& input) {
-	if(itemCount == 0) {
+	if(itemCount == 0) { //very first add
 		myVector_.resize(10);
 		first = myVector_.begin();
 		last = myVector_.begin();
 		*first = input;
 	}
-	else if(itemCount == myVector_.size()) {
-		myVector_.resize(myVector_.size() * 2);
-		first = myVector_.begin();
-		last = first + itemCount;
-		*last = input;
-	} else{
+	else { // second ++ add
+		if(itemCount == myVector_.size()){
+			// add && need to resize
+			reallocateQueue();
+			std::cout << "Triggered" << std::endl;
+		}
+		// add but there are empty whole && no need to resize
+		// the (itr)last is pointing the last element of vector
+//Super set of Vector
+		// QuickQueue (= Vector
+		// we can use Vector features
+		// first, last, Head, Tail, vector.begin(), vector.begin() + itemcount
+		else if(last > myVector_.begin() + itemCount) {
+			last = myVector_.begin();
+		}
 		*last = input;
 	}
-
 	itemCount++;
 	last++;
 	//
@@ -62,6 +70,13 @@ void QuickQueue<T>::pop() {
 	}
 	
 	info();
+}
+
+template<typename T>
+void QuickQueue<T>::reallocateQueue(){
+	myVector_.resize(myVector_.size() * 2);
+	first = myVector_.begin();
+	last = first + itemCount;
 }
 
 template<typename T>

@@ -16,7 +16,7 @@ public:
 
 	void pop(); //remove first element
 	void add(const T& input);
-	void resize();
+	void reallocateQueue();
 
 	void info();
 
