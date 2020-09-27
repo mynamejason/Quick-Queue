@@ -16,18 +16,23 @@ T& QuickQueue<T>::head(){
 		if(myVector_.size() == 1){
 			return myVector_[0];
 		} else{
-			//return myVector_[];
+			return *first;
 		}
 	}
 }
 
 template<typename T>
-T& QuickQueue<T>::tail(){
+T& QuickQueue<T>::tail() {
 	if(myVector_.size() > 0){
-		return myVector_[myVector_.size() - 1];
+		//typename std::vector<T>::iterator temp = last;
+		last--;
+		T& result = *last;
+		last++;
+		return result;
 	}
 }
-
+//f               l--
+//[1][2][3][4][0][10]
 template<typename T>
 void QuickQueue<T>::add(const T& input) {
 	if(itemCount == 0) { //very first add
@@ -42,12 +47,6 @@ void QuickQueue<T>::add(const T& input) {
 			reallocateQueue();
 			std::cout << "Triggered" << std::endl;
 		}
-		// add but there are empty whole && no need to resize
-		// the (itr)last is pointing the last element of vector
-//Super set of Vector
-		// QuickQueue (= Vector
-		// we can use Vector features
-		// first, last, Head, Tail, vector.begin(), vector.begin() + itemcount
 		else if(last > myVector_.begin() + itemCount) {
 			last = myVector_.begin();
 		}
@@ -74,7 +73,19 @@ void QuickQueue<T>::pop() {
 
 template<typename T>
 void QuickQueue<T>::reallocateQueue(){
-	myVector_.resize(myVector_.size() * 2);
+	typename std::vector<T>::iterator travelPtr = first;
+	std::vector<T> tempVector(myVector_.size() * 2);
+
+	for(int i = 0; i < myVector_.size(); i++) {
+		if(travelPtr == myVector_.end()) {
+			travelPtr = myVector_.begin();
+		}
+
+		tempVector[i] = *travelPtr; 
+		travelPtr++;
+	}
+
+	myVector_ = tempVector;
 	first = myVector_.begin();
 	last = first + itemCount;
 }
@@ -84,8 +95,8 @@ void QuickQueue<T>::info(){
 	std::cout << "---------info()----------" << std::endl;
 	std::cout << "size: " << myVector_.size() << std::endl;
 	std::cout << "capacity: " << myVector_.capacity() << std::endl;
-	// std::cout << "head: " << head() << std::endl;
-	// std::cout << "tail: " << tail() << std::endl;
+	std::cout << "head: " << head() << std::endl;
+	std::cout << "tail: " << tail() << std::endl;
 	std::cout << "first: " << &(*first) << std::endl;
 	std::cout << "last: " << &(*last) << std::endl;
 	for(int i = 0; i < myVector_.size(); i++){
