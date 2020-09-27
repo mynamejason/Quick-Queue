@@ -7,13 +7,15 @@ int main(){
 
 	QuickQueue<int> myQQ;
 
-	myQQ.add(10);
-	myQQ.add(20);
-	myQQ.add(30);
+	for(int i = 1; i <= 10; i++){
+		myQQ.add(i);
+	}
 	myQQ.pop();
-	myQQ.add(40);
-	myQQ.add(50);
 	myQQ.pop();
+	myQQ.add(11);
+	myQQ.add(12);
+	myQQ.add(13);
+	//myQQ.pop();
 
 	return 0;
 }

@@ -16,35 +16,42 @@ T& QuickQueue<T>::head(){
 		if(myVector_.size() == 1){
 			return myVector_[0];
 		} else{
-			//return myVector_[];
+			return *first;
 		}
 	}
 }
 
 template<typename T>
-T& QuickQueue<T>::tail(){
+T& QuickQueue<T>::tail() {
 	if(myVector_.size() > 0){
-		return myVector_[myVector_.size() - 1];
+		//typename std::vector<T>::iterator temp = last;
+		last--;
+		T& result = *last;
+		last++;
+		return result;
 	}
 }
-
+//f               l--
+//[1][2][3][4][0][10]
 template<typename T>
 void QuickQueue<T>::add(const T& input) {
-	if(itemCount == 0) {
+	if(itemCount == 0) { //very first add
 		myVector_.resize(10);
 		first = myVector_.begin();
 		last = myVector_.begin();
 		*first = input;
 	}
-	else if(itemCount == myVector_.size()) {
-		myVector_.resize(myVector_.size() * 2);
-		first = myVector_.begin();
-		last = first + itemCount;
-		*last = input;
-	} else{
+	else { // second ++ add
+		if(itemCount == myVector_.size()){
+			// add && need to resize
+			reallocateQueue();
+			std::cout << "Triggered" << std::endl;
+		}
+		else if(last > myVector_.begin() + itemCount) {
+			last = myVector_.begin();
+		}
 		*last = input;
 	}
-
 	itemCount++;
 	last++;
 	//
@@ -65,12 +72,31 @@ void QuickQueue<T>::pop() {
 }
 
 template<typename T>
+void QuickQueue<T>::reallocateQueue(){
+	typename std::vector<T>::iterator travelPtr = first;
+	std::vector<T> tempVector(myVector_.size() * 2);
+
+	for(int i = 0; i < myVector_.size(); i++) {
+		if(travelPtr == myVector_.end()) {
+			travelPtr = myVector_.begin();
+		}
+
+		tempVector[i] = *travelPtr; 
+		travelPtr++;
+	}
+
+	myVector_ = tempVector;
+	first = myVector_.begin();
+	last = first + itemCount;
+}
+
+template<typename T>
 void QuickQueue<T>::info(){
 	std::cout << "---------info()----------" << std::endl;
 	std::cout << "size: " << myVector_.size() << std::endl;
 	std::cout << "capacity: " << myVector_.capacity() << std::endl;
-	// std::cout << "head: " << head() << std::endl;
-	// std::cout << "tail: " << tail() << std::endl;
+	std::cout << "head: " << head() << std::endl;
+	std::cout << "tail: " << tail() << std::endl;
 	std::cout << "first: " << &(*first) << std::endl;
 	std::cout << "last: " << &(*last) << std::endl;
 	for(int i = 0; i < myVector_.size(); i++){

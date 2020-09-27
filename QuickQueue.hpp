@@ -5,24 +5,23 @@
 #include <iostream>
 
 template<typename T>
-
 class QuickQueue{
 public:
 	QuickQueue();
 	~QuickQueue();
 
-	T& head();
+	T& head(); //4bytes
 	T& tail();
 
 	void pop(); //remove first element
 	void add(const T& input);
-	void resize();
+	void reallocateQueue();
 
 	void info();
 
 	std::vector<T> myVector_;
 
-	typename std::vector<T>::iterator first;
+	typename std::vector<T>::iterator first;//32bytes??
 	typename std::vector<T>::iterator last;
 	int itemCount;
 
