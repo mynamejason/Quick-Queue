@@ -35,6 +35,15 @@ T& QuickQueue<T>::tail() {
 //[1][2][3][4][0][10]
 template<typename T>
 void QuickQueue<T>::add(const T& input) {
+/*        l   f                         
+	[8][9][3][4][5][6][7]
+	     l   f               ?   %    
+	[11][12][5][6][7][8][9][10][13][0][0][0][0][][][] //<- soso idea
+	f ~ ? -> befgin() ~ f -> ? ~ end()
+
+	[5]~[11][13] //<- good idea, re arrange them 
+	[5]~[11][0][0][0][0][][][][][][][][]*/
+
 	if(itemCount == 0) { //very first add
 		myVector_.resize(10);
 		first = myVector_.begin();
@@ -50,7 +59,10 @@ void QuickQueue<T>::add(const T& input) {
 		else if(last > myVector_.begin() + itemCount) {
 			last = myVector_.begin();
 		}
-		*last = input;
+		else if(last == first){
+			rearrangeQueue();
+		}
+		*last = input; //
 	}
 	itemCount++;
 	last++;
@@ -82,6 +94,24 @@ void QuickQueue<T>::reallocateQueue(){
 		}
 
 		tempVector[i] = *travelPtr; 
+		travelPtr++;
+	}
+
+	myVector_ = tempVector;
+	first = myVector_.begin();
+	last = first + itemCount;
+}
+
+template<typename T>
+void QuickQueue<T>::rearrangeQueue(){
+	typename std::vector<T>::iterator travelPtr = first;
+	std::vector<T> tempVector(myVector_.size());
+
+	for(int i = 0; i < itemCount; i++) {
+		if(travelPtr == myVector_.begin() + itemCount) {
+			travelPtr = myVector_.begin();
+		}
+		tempVector[i] = *travelPtr;
 		travelPtr++;
 	}
 
